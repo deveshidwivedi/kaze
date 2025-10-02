@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const WEATHER_API_KEY = process.env.OPENWEATHER_API_KEY || 'your_openweather_api_key_here';
+const WEATHER_API_KEY = process.env.REACT_APP_OPENWEATHER_API_KEY || 'your_REACT_APP_OPENWEATHER_API_KEY_here';
 const WEATHER_BASE_URL = 'https://api.openweathermap.org/data/2.5';
 
 export const getCurrentWeather = async (lat, lon) => {

@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const API_KEY = process.env.GEMINI_API_KEY || 'your_gemini_api_key_here';
+const API_KEY = process.env.REACT_APP_REACT_APP_GEMINI_API_KEY || 'your_REACT_APP_GEMINI_API_KEY_here';
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 export const generateWellnessAdvice = async (weatherData, userMessage = '') => {
