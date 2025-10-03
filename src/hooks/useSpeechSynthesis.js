@@ -17,28 +17,28 @@ const useSpeechSynthesis = () => {
         const availableVoices = window.speechSynthesis.getVoices();
         console.log("Available voices:", availableVoices.length);
 
-        // filter for Japanese voices
-        const japaneseVoices = availableVoices.filter(
-          (voice) => voice.lang.includes("ja") || voice.lang.includes("JP")
+        // filter for English voices (for testing)
+        const englishVoices = availableVoices.filter(
+          (voice) => voice.lang.includes("en") || voice.lang.includes("EN")
         );
 
-        console.log("Japanese voices:", japaneseVoices.length);
+        console.log("English voices:", englishVoices.length);
 
-        setVoices(japaneseVoices);
+        setVoices(englishVoices);
 
-        // set default Japanese voice or fallback to any voice
-        if (japaneseVoices.length > 0) {
+        // set default English voice or fallback to any voice
+        if (englishVoices.length > 0) {
           const preferredVoice =
-            japaneseVoices.find(
+            englishVoices.find(
               (voice) =>
                 voice.name.includes("Female") ||
-                voice.name.includes("Kyoko") ||
-                voice.name.includes("Otoya") ||
+                voice.name.includes("Microsoft Zira") ||
+                voice.name.includes("Google UK English Female") ||
                 voice.gender === "female"
-            ) || japaneseVoices[0];
+            ) || englishVoices[0];
 
           setSelectedVoice(preferredVoice);
-          console.log("Selected Japanese voice:", preferredVoice.name);
+          console.log("Selected English voice:", preferredVoice.name);
           setIsReady(true);
         } else if (availableVoices.length > 0) {
           // Fallback to any available voice
@@ -95,8 +95,8 @@ const useSpeechSynthesis = () => {
           console.log("No voice selected, using browser default");
         }
 
-        // set language
-        utterance.lang = "ja-JP";
+        // set language to English for testing
+        utterance.lang = "en-US";
 
         // apply options
         utterance.rate = options.rate || 0.9;

@@ -27,6 +27,7 @@ function App() {
   const [isVoiceEnabled, setIsVoiceEnabled] = useState(true);
   const [locationError, setLocationError] = useState(null);
   const [latestAssistantMessage, setLatestAssistantMessage] = useState(null);
+  const [hasSpokenCurrentMessage, setHasSpokenCurrentMessage] = useState(false);
 
   // Refs
   const messagesEndRef = useRef(null);
@@ -60,19 +61,20 @@ function App() {
     console.log("Voice enabled status:", isVoiceEnabled);
   }, [speechSynthesisSupported, speechSynthesisReady, isVoiceEnabled]);
 
-  // Auto-speak when speech synthesis becomes ready and there's a message to speak
   useEffect(() => {
     if (
       speechSynthesisReady &&
       speechSynthesisSupported &&
       isVoiceEnabled &&
       latestAssistantMessage &&
-      !isSpeaking
+      !isSpeaking &&
+      !hasSpokenCurrentMessage
     ) {
       console.log(
         "Auto-speaking latest message:",
         latestAssistantMessage.text.substring(0, 50) + "..."
       );
+      setHasSpokenCurrentMessage(true);
       setTimeout(() => {
         speak(latestAssistantMessage.text);
       }, 200);
@@ -82,8 +84,7 @@ function App() {
     speechSynthesisSupported,
     isVoiceEnabled,
     latestAssistantMessage,
-    isSpeaking,
-    speak,
+    hasSpokenCurrentMessage,
   ]);
 
   useEffect(() => {
@@ -96,7 +97,6 @@ function App() {
     scrollToBottom();
   }, [messages]);
 
-  // Functions
   const initializeApp = async () => {
     try {
       setIsLoading(true);
@@ -115,6 +115,7 @@ function App() {
 
       setMessages([initialMessage]);
       setLatestAssistantMessage(initialMessage);
+      setHasSpokenCurrentMessage(false);
 
       // Speak initial advice if voice is enabled and speech is ready
       if (isVoiceEnabled && speechSynthesisSupported && speechSynthesisReady) {
@@ -186,6 +187,7 @@ function App() {
 
       setMessages((prev) => [...prev, assistantMessage]);
       setLatestAssistantMessage(assistantMessage);
+      setHasSpokenCurrentMessage(false);
 
       // Automatically speak response if voice is enabled and speech is ready
       if (isVoiceEnabled && speechSynthesisSupported && speechSynthesisReady) {
@@ -243,19 +245,18 @@ function App() {
       stopSpeaking();
     }
 
-    // When turning voice back on, read the latest assistant message from the beginning
-    if (newVoiceState && speechSynthesisSupported && latestAssistantMessage) {
+    if (
+      newVoiceState &&
+      speechSynthesisSupported &&
+      speechSynthesisReady &&
+      latestAssistantMessage
+    ) {
       console.log(
         "Voice turned on, reading latest message:",
         latestAssistantMessage.text.substring(0, 50) + "..."
       );
       setTimeout(() => {
         speak(latestAssistantMessage.text);
-      }, 200);
-    } else if (newVoiceState && speechSynthesisSupported) {
-      // Fallback notification if no latest message
-      setTimeout(() => {
-        speak("音声出力がオンになりました。");
       }, 200);
     }
   };
