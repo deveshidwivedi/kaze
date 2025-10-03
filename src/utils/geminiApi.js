@@ -72,20 +72,20 @@ export const generateWellnessAdvice = async (weatherData, userMessage = "") => {
     const weatherContext = formatWeatherForPrompt(weatherData);
 
     const prompt = `
-You are an English-speaking wellness assistant. Provide a short welcome message with current weather summary, followed by topics the user can ask about.
+あなたは日本語を話すウェルネスアシスタントです。現在の天気の要約と、ユーザーが質問できるトピックを含む短い歓迎メッセージを提供してください。
 
-Current weather information:
+現在の天気情報:
 ${weatherContext}
 
-User message: ${userMessage || "Please give me today's weather summary"}
+ユーザーからのメッセージ: ${userMessage || "今日の天気の概要を教えてください"}
 
-Structure your response as follows:
-1. Brief current weather summary (2-3 sentences)
-2. Then say "You can ask me about:" followed by 4-5 weather-related topics they can inquire about
+以下の構造で応答してください：
+1. 簡潔な現在の天気の要約（2-3文）
+2. 「以下についてお聞きいただけます：」と言って、4-5個の天気関連のトピックを続ける
 
-Keep the entire response under 100 words. Write naturally without formatting symbols. Be conversational and helpful.
+応答全体を100単語以内に収めてください。フォーマット記号を使わず、自然に書いてください。会話的で親しみやすくしてください。
 
-Example: "It's currently 20°C with clear skies in your area. The humidity is moderate at 65%. You can ask me about clothing recommendations for today's weather, health tips for this temperature, outdoor activity suggestions, food choices that suit today's conditions, or mental wellness advice for sunny days."
+例: "現在、お住まいの地域は20°Cで晴天です。湿度は65%と適度です。以下についてお聞きいただけます：今日の天気に適した服装のおすすめ、この気温での健康のコツ、屋外活動の提案、今日の状況に適した食べ物の選択、または晴れた日のメンタルウェルネスアドバイス。"
 `;
 
     const result = await model.generateContent(prompt);
@@ -93,12 +93,12 @@ Example: "It's currently 20°C with clear skies in your area. The humidity is mo
     return response.text();
   } catch (error) {
     console.error("Gemini API error:", error);
-    return "Sorry, an error occurred while generating wellness advice. Please try again. 🙇‍♀️";
+    return "すみません、ウェルネスアドバイスの生成中にエラーが発生しました。もう一度お試しください。🙇‍♀️";
   }
 };
 
 const formatWeatherForPrompt = (weatherData) => {
-  if (!weatherData) return "Weather information not available";
+  if (!weatherData) return "天気情報が利用できません";
 
   const {
     main: { temp, feels_like, humidity, pressure } = {},
@@ -109,22 +109,24 @@ const formatWeatherForPrompt = (weatherData) => {
     name: cityName,
   } = weatherData;
 
-  const uvIndex = weatherData.uvi || "No data";
+  const uvIndex = weatherData.uvi || "データなし";
 
   return `
-Location: ${cityName}
-Temperature: ${temp}°C (feels like: ${feels_like}°C)
-Weather: ${description} (${weatherMain})
-Humidity: ${humidity}%
-Pressure: ${pressure}hPa
-Wind speed: ${speed}m/s
-Visibility: ${visibility ? `${visibility / 1000}km` : "No data"}
-UV Index: ${uvIndex}
-Sunrise: ${
-    sunrise ? new Date(sunrise * 1000).toLocaleTimeString("en-US") : "No data"
+場所: ${cityName}
+気温: ${temp}°C (体感温度: ${feels_like}°C)
+天気: ${description} (${weatherMain})
+湿度: ${humidity}%
+気圧: ${pressure}hPa
+風速: ${speed}m/s
+視界: ${visibility ? `${visibility / 1000}km` : "データなし"}
+紫外線指数: ${uvIndex}
+日の出: ${
+    sunrise
+      ? new Date(sunrise * 1000).toLocaleTimeString("ja-JP")
+      : "データなし"
   }
-Sunset: ${
-    sunset ? new Date(sunset * 1000).toLocaleTimeString("en-US") : "No data"
+日の入り: ${
+    sunset ? new Date(sunset * 1000).toLocaleTimeString("ja-JP") : "データなし"
   }
 `;
 };
@@ -148,16 +150,16 @@ export const generateResponseToUserInput = async (
         : "";
 
     const prompt = `
-You are an English-speaking wellness assistant. Answer the user's question concisely and naturally.
+あなたは日本語を話すウェルネスアシスタントです。ユーザーの質問に簡潔で自然に答えてください。
 
-Current weather information:
+現在の天気情報:
 ${weatherContext}
 
-${historyContext ? `Recent conversation:\n${historyContext}\n` : ""}
+${historyContext ? `最近の会話:\n${historyContext}\n` : ""}
 
-User question: ${userInput}
+ユーザーの質問: ${userInput}
 
-Provide a helpful, concise answer related to their question and the current weather. Keep it under 80 words, be conversational, and avoid any formatting symbols. Focus on practical advice.
+ユーザーの質問と現在の天気に関連した役立つ簡潔な回答を提供してください。80語以内に収め、会話的にし、フォーマット記号は避けてください。実用的なアドバイスに焦点を当ててください。
 `;
 
     const result = await model.generateContent(prompt);
@@ -165,6 +167,6 @@ Provide a helpful, concise answer related to their question and the current weat
     return response.text();
   } catch (error) {
     console.error("Gemini API error:", error);
-    return "Sorry, an error occurred while generating response. Please try again. 🙇‍♀️";
+    return "すみません、お返事の生成中にエラーが発生しました。もう一度お試しください。🙇‍♀️";
   }
 };

@@ -258,6 +258,11 @@ function App() {
       setTimeout(() => {
         speak(latestAssistantMessage.text);
       }, 200);
+    } else if (newVoiceState && speechSynthesisSupported) {
+      // Fallback notification if no latest message
+      setTimeout(() => {
+        speak("音声出力がオンになりました。");
+      }, 200);
     }
   };
 
@@ -271,7 +276,7 @@ function App() {
   return (
     <div className="app">
       <header className="header">
-        <h1>🌤️ 天気ウェルネスアシスタント</h1>
+        <h1>🌤️ 風</h1>
         <p>天気に合わせた健康アドバイスをお届けします</p>
       </header>
 
