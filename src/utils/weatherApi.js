@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const WEATHER_API_KEY = process.env.REACT_APP_OPENWEATHER_API_KEY || 'your_REACT_APP_OPENWEATHER_API_KEY_here';
+const WEATHER_API_KEY = process.env.REACT_APP_WEATHER_API_KEY || 'your_REACT_APP_WEATHER_API_KEY_here';
 const WEATHER_BASE_URL = 'https://api.openweathermap.org/data/2.5';
 
 export const getCurrentWeather = async (lat, lon) => {
@@ -92,7 +92,7 @@ export const getUserLocation = () => {
       {
         enableHighAccuracy: true,
         timeout: 10000,
-        maximumAge: 300000 // 5 minutes
+        maximumAge: 300000 
       }
     );
   });
