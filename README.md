@@ -1,6 +1,8 @@
-# 🌤️ Kaze (風) - Weather Wellness Assistant
+#  Kaze (風) - Weather Wellness Assistant
 
 **Kaze** is a Japanese voice-enabled wellness chatbot that combines real-time weather data with AI-powered health and lifestyle guidance.
+
+<img width="1473" height="745" alt="Screenshot 2025-10-04 012657" src="https://github.com/user-attachments/assets/b4e173fb-a341-48fa-bbc3-5309fde969dc" />
 
 ## **Core Features & Requirements Fulfillment**
 
@@ -22,16 +24,10 @@
 
 **Architecture**: Component-based with custom hooks for voice functionality
 
-## **Target Users & Use Cases**
-
-- **Health-conscious individuals** seeking weather-appropriate wellness advice
-- **Daily commuters** needing clothing and activity recommendations
-- **Fitness enthusiasts** wanting weather-safe exercise guidance
-- **Anyone** looking for personalized health tips based on current conditions
 
 ## **Unique Value Proposition**
 
-Unlike basic weather apps, Kaze provides **actionable wellness insights** by intelligently combining meteorological data with health expertise, offering personalized advice for:
+Unlike basic weather apps, Kaze provides actionable wellness insights by intelligently combining meteorological data with health expertise, offering personalized advice for:
 
 - Clothing recommendations
 - Nutrition guidance
