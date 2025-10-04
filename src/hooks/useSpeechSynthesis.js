@@ -8,21 +8,16 @@ const useSpeechSynthesis = () => {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    console.log("Checking speech synthesis support...");
     if ("speechSynthesis" in window) {
-      console.log("Speech synthesis is supported");
       setIsSupported(true);
 
       const loadVoices = () => {
         const availableVoices = window.speechSynthesis.getVoices();
-        console.log("Available voices:", availableVoices.length);
 
         // filter for Japanese voices
         const japaneseVoices = availableVoices.filter(
           (voice) => voice.lang.includes("ja") || voice.lang.includes("JP")
         );
-
-        console.log("Japanese voices:", japaneseVoices.length);
 
         setVoices(japaneseVoices);
 
@@ -38,16 +33,13 @@ const useSpeechSynthesis = () => {
             ) || japaneseVoices[0];
 
           setSelectedVoice(preferredVoice);
-          console.log("Selected Japanese voice:", preferredVoice.name);
           setIsReady(true);
         } else if (availableVoices.length > 0) {
           // Fallback to any available voice
           const fallbackVoice = availableVoices[0];
           setSelectedVoice(fallbackVoice);
-          console.log("Selected fallback voice:", fallbackVoice.name);
           setIsReady(true);
         } else {
-          console.log("No voices available, using browser default");
           setIsReady(true);
         }
       };
@@ -71,14 +63,8 @@ const useSpeechSynthesis = () => {
   const speak = useCallback(
     (text, options = {}) => {
       if (!isSupported || !text) {
-        console.log("Speech not supported or no text provided");
         return;
       }
-
-      console.log(
-        "Starting speech synthesis for:",
-        text.substring(0, 50) + "..."
-      );
 
       // cancel any ongoing speech
       window.speechSynthesis.cancel();
@@ -90,9 +76,6 @@ const useSpeechSynthesis = () => {
         // set voice (use selected voice or let browser choose)
         if (selectedVoice) {
           utterance.voice = selectedVoice;
-          console.log("Using voice:", selectedVoice.name);
-        } else {
-          console.log("No voice selected, using browser default");
         }
 
         // set language to Japanese
@@ -104,12 +87,10 @@ const useSpeechSynthesis = () => {
         utterance.volume = options.volume || 1.0;
 
         utterance.onstart = () => {
-          console.log("Speech started:", text.substring(0, 50) + "...");
           setIsSpeaking(true);
         };
 
         utterance.onend = () => {
-          console.log("Speech ended");
           setIsSpeaking(false);
         };
 
@@ -118,7 +99,6 @@ const useSpeechSynthesis = () => {
           setIsSpeaking(false);
         };
 
-        console.log("Speaking with utterance:", utterance);
         window.speechSynthesis.speak(utterance);
       }, 50);
     },

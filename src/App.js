@@ -55,11 +55,11 @@ function App() {
     initializeApp();
   }, []);
 
-  useEffect(() => {
-    console.log("Speech synthesis support status:", speechSynthesisSupported);
-    console.log("Speech synthesis ready status:", speechSynthesisReady);
-    console.log("Voice enabled status:", isVoiceEnabled);
-  }, [speechSynthesisSupported, speechSynthesisReady, isVoiceEnabled]);
+  useEffect(() => {}, [
+    speechSynthesisSupported,
+    speechSynthesisReady,
+    isVoiceEnabled,
+  ]);
 
   useEffect(() => {
     if (
@@ -70,10 +70,6 @@ function App() {
       !isSpeaking &&
       !hasSpokenCurrentMessage
     ) {
-      console.log(
-        "Auto-speaking latest message:",
-        latestAssistantMessage.text.substring(0, 50) + "..."
-      );
       setHasSpokenCurrentMessage(true);
       setTimeout(() => {
         speak(latestAssistantMessage.text);
@@ -119,22 +115,9 @@ function App() {
 
       // Speak initial advice if voice is enabled and speech is ready
       if (isVoiceEnabled && speechSynthesisSupported && speechSynthesisReady) {
-        console.log(
-          "Attempting to speak initial advice:",
-          initialAdvice.substring(0, 50) + "..."
-        );
         setTimeout(() => {
           speak(initialAdvice);
         }, 500);
-      } else {
-        console.log(
-          "Speech not ready. Voice enabled:",
-          isVoiceEnabled,
-          "Speech supported:",
-          speechSynthesisSupported,
-          "Speech ready:",
-          speechSynthesisReady
-        );
       }
     } catch (error) {
       console.error("Initialization error:", error);
@@ -191,22 +174,9 @@ function App() {
 
       // Automatically speak response if voice is enabled and speech is ready
       if (isVoiceEnabled && speechSynthesisSupported && speechSynthesisReady) {
-        console.log(
-          "Auto-speaking response:",
-          response.substring(0, 50) + "..."
-        );
         setTimeout(() => {
           speak(response);
         }, 100);
-      } else {
-        console.log(
-          "Speech not ready. Voice enabled:",
-          isVoiceEnabled,
-          "Speech supported:",
-          speechSynthesisSupported,
-          "Speech ready:",
-          speechSynthesisReady
-        );
       }
     } catch (error) {
       console.error("Error generating response:", error);
@@ -251,10 +221,6 @@ function App() {
       speechSynthesisReady &&
       latestAssistantMessage
     ) {
-      console.log(
-        "Voice turned on, reading latest message:",
-        latestAssistantMessage.text.substring(0, 50) + "..."
-      );
       setTimeout(() => {
         speak(latestAssistantMessage.text);
       }, 200);
@@ -276,7 +242,7 @@ function App() {
   return (
     <div className="app">
       <header className="header">
-        <h1>🌤️ 風</h1>
+        <h1>🌤️風</h1>
         <p>天気に合わせた健康アドバイスをお届けします</p>
       </header>
 
